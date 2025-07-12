@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface FrogApiService {
 
-    @GET(".")
+    @GET("amphibians")
     suspend fun getPhotos(): List<FrogPhoto>
 
 }

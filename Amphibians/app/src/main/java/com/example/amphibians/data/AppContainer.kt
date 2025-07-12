@@ -12,7 +12,7 @@ interface AppContainer {
 
 class DefaultAppContainer : AppContainer {
     // base url
-    private val baseUrl = "https://android-kotlin-fun-mars-server.appspot.com/amphibians/"
+    private val baseUrl = "https://android-kotlin-fun-mars-server.appspot.com/"
 
 
     // use the retrofit builder to build a retrofit object using a kotlinx serilization converter
