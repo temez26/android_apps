@@ -6,10 +6,10 @@ import com.example.bookshelf.network.BooksApiService
 
 interface BooksPhotosRepository {
     // fetches list of books from booksapiservice
-    suspend fun getBooksPhotos(): List<BookApiResponse>
+    suspend fun getBooksPhotos(): BookApiResponse
 }
 
 class NetworkBooksPhotosRepository(private val booksApiService: BooksApiService): BooksPhotosRepository {
     // fetches list of books from booksapiservice
-    override suspend fun getBooksPhotos(): List<BookApiResponse> = booksApiService.getBooks()
+    override suspend fun getBooksPhotos(): BookApiResponse = booksApiService.getBooks()
 }

@@ -14,8 +14,8 @@ interface AppContainer {
 
 // here comes implementation for the dependency injection container at the application level
 class DefaultAppContainer : AppContainer {
-    // first baseurl
-    private val baseUrl = "https://www.googleapis.com/books/v1/volumes?q="
+    // first baseurl must end with /
+    private val baseUrl = "https://www.googleapis.com/books/v1/"
 
     // use retrofit builder to build retrofit object using serialization converter
     private val retrofit: Retrofit = Retrofit.Builder()
