@@ -1,12 +1,12 @@
 package com.example.bookshelf.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,10 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -44,7 +44,18 @@ fun HomeScreen(
 
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
-
+ Column(
+  modifier = modifier,
+  verticalArrangement = Arrangement.Center,
+  horizontalAlignment = Alignment.CenterHorizontally
+ ) {
+  CircularProgressIndicator()
+  Text(
+   text = "Loading...",
+   modifier = Modifier.padding(16.dp),
+   style = MaterialTheme.typography.titleMedium
+  )
+ }
 }
 
 @Composable
@@ -54,10 +65,18 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
   verticalArrangement = Arrangement.Center,
   horizontalAlignment = Alignment.CenterHorizontally
  ) {
-
-  Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
+  Text(
+   text = "⚠️",
+   style = MaterialTheme.typography.displayLarge,
+   modifier = Modifier.padding(16.dp)
+  )
+  Text(
+   text = "Loading failed",
+   modifier = Modifier.padding(16.dp),
+   style = MaterialTheme.typography.titleMedium
+  )
   Button(onClick = retryAction) {
-   Text(stringResource(R.string.retry))
+   Text("Retry")
   }
  }
 }
@@ -68,17 +87,16 @@ fun BookPhotosGridScreen(
  modifier: Modifier = Modifier
 ) {
  LazyVerticalGrid(
-  columns = GridCells.Adaptive(150.dp),
-  modifier = modifier.padding(horizontal = 4.dp),
-  contentPadding = PaddingValues(4.dp)
+  columns = GridCells.Adaptive(minSize = 180.dp), // Optimized for better book display
+  modifier = modifier.padding(horizontal = 8.dp),
+  contentPadding = PaddingValues(8.dp),
+  horizontalArrangement = Arrangement.spacedBy(8.dp),
+  verticalArrangement = Arrangement.spacedBy(8.dp)
  ) {
   items(items = books, key = { book -> book.id }) { book ->
    BookCard(
     book = book,
-    modifier = Modifier
-     .padding(4.dp)
-     .fillMaxWidth()
-     .aspectRatio(1.5f)
+    modifier = Modifier.fillMaxWidth()
    )
   }
  }
@@ -88,47 +106,69 @@ fun BookPhotosGridScreen(
 fun BookCard(book: BookVolume, modifier: Modifier = Modifier) {
  Card(
   modifier = modifier
+   .height(300.dp) // Increased height for better image display
  ) {
-  Column {
-   AsyncImage(
-    model = ImageRequest.Builder(context = LocalContext.current)
-     .data(book.volumeInfo.imageLinks?.thumbnail?.replace("http://", "https://"))
-     .crossfade(true)
-     .build(),
-    error = painterResource(R.drawable.ic_broken_image),
-    placeholder = painterResource(R.drawable.loading_img),
-    contentDescription = book.volumeInfo.title,
-    contentScale = ContentScale.Crop,
+  Column(
+   modifier = Modifier
+    .padding(8.dp)
+    .fillMaxHeight()
+  ) {
+   // Book cover image with better sizing
+   Card(
     modifier = Modifier
      .fillMaxWidth()
-     .height(194.dp)
-   )
+     .height(180.dp) // Increased height for better image display
+   ) {
+    AsyncImage(
+     model = ImageRequest.Builder(context = LocalContext.current)
+      .data(book.volumeInfo.imageLinks?.thumbnail?.replace("http://", "https://"))
+      .crossfade(true)
+      .build(),
+     contentDescription = book.volumeInfo.title,
+     contentScale = ContentScale.Fit, // Changed to Fit to show full image
+     modifier = Modifier.fillMaxSize()
+    )
+   }
 
+   Spacer(modifier = Modifier.height(8.dp))
+
+   // Title - with weight to fill remaining space
    Text(
     text = book.volumeInfo.title,
-    style = MaterialTheme.typography.titleMedium,
+    style = MaterialTheme.typography.titleSmall,
     fontWeight = FontWeight.Bold,
-    textAlign = TextAlign.Center,
+    textAlign = TextAlign.Start,
+    maxLines = 2,
+    overflow = TextOverflow.Ellipsis,
     modifier = Modifier
-     .padding(8.dp)
      .fillMaxWidth()
+     .weight(1f) // This takes up remaining space
    )
+
+   Spacer(modifier = Modifier.height(4.dp))
+
+   // Authors - fixed at bottom
+   book.volumeInfo.authors?.let { authors ->
+    Text(
+     text = "by ${authors.joinToString(", ")}",
+     style = MaterialTheme.typography.bodySmall,
+     color = MaterialTheme.colorScheme.onSurfaceVariant,
+     maxLines = 1,
+     overflow = TextOverflow.Ellipsis,
+     modifier = Modifier.fillMaxWidth()
+    )
+   }
+
+   Spacer(modifier = Modifier.height(4.dp))
+
+   // Published date - fixed at bottom
+   book.volumeInfo.publishedDate?.let { date ->
+    Text(
+     text = date,
+     style = MaterialTheme.typography.bodySmall,
+     color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+   }
   }
- }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoadingScreenPreview() {
- BookshelfTheme {
-  LoadingScreen()
- }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ErrorScreenPreview() {
- BookshelfTheme {
-  ErrorScreen({})
  }
 }

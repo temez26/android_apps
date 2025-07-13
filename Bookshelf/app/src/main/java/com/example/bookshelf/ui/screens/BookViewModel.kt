@@ -28,17 +28,23 @@ class BookViewModel(private val booksPhotosRepository: BooksPhotosRepository) : 
         getBooks()
     }
 
+
     fun getBooks() {
         viewModelScope.launch {
             bookUiState = BookUiState.Loading
             bookUiState = try {
+                println("Making API call...")
                 val result = booksPhotosRepository.getBooksPhotos()
-                BookUiState.Success(result.items )
+                println("API call successful: ${result.items?.size} books received")
+                BookUiState.Success(result.items ?: emptyList())
             } catch (e: Exception) {
+                println("API call failed: ${e.message}")
+                e.printStackTrace()
                 BookUiState.Error
             }
         }
     }
+
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

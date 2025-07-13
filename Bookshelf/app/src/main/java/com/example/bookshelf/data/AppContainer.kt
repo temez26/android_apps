@@ -19,7 +19,7 @@ class DefaultAppContainer : AppContainer {
 
     // use retrofit builder to build retrofit object using serialization converter
     private val retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(Json{ignoreUnknownKeys = true}.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl)
         .build()
 

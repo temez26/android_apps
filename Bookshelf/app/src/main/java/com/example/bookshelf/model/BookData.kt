@@ -81,3 +81,10 @@ data class AccessInfo(
     val embeddable: Boolean,
     val publicDomain: Boolean
 )
+
+@Serializable
+data class Book(
+    val id: String,
+    val volumeInfo: VolumeInfo
+)
+
