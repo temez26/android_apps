@@ -1,5 +1,6 @@
 package com.example.bookshelf.data
 
+import com.example.bookshelf.network.BooksApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -7,6 +8,7 @@ import retrofit2.Retrofit
 
 // here comes the DI container at the application level
 interface AppContainer {
+    val booksPhotosRepository: BooksPhotosRepository
 }
 
 
@@ -20,5 +22,15 @@ class DefaultAppContainer : AppContainer {
         .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl)
         .build()
+
+    // retrofit service object for creating api calls
+    private val retrofitService: BooksApiService by lazy {
+        retrofit.create(BooksApiService::class.java)
+    }
+
+    // DI implementation for Books photos repository
+    override val booksPhotosRepository: BooksPhotosRepository by lazy {
+        NetworkBooksPhotosRepository(retrofitService)
+    }
 
 }
