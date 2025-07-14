@@ -59,7 +59,7 @@ private fun BookImage(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier.padding(2.dp),
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(
@@ -68,7 +68,7 @@ private fun BookImage(
                 .crossfade(true)
                 .build(),
             contentDescription = book.volumeInfo.title,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Fit,
             modifier = Modifier.fillMaxSize()
         )
     }
