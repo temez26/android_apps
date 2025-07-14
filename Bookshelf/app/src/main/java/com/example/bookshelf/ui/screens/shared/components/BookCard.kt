@@ -25,104 +25,72 @@ import com.example.bookshelf.model.BookVolume
 @Composable
 fun BookCard(
     book: BookVolume,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    imageWeight: Float = 0.7f,
+    infoWeight: Float = 0.3f,
+    cornerRadius: Int = 12,
+    cardElevation: Int = 4,
+    contentPadding: Int = 8,
+    titleMaxLines: Int = 3,
+    authorsMaxLines: Int = 2
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        shape = RoundedCornerShape(cornerRadius.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = cardElevation.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            BookImage(
-                book = book,
+            // Book Image
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.7f)
-            )
+                    .weight(imageWeight)
+                    .padding(2.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(book.volumeInfo.imageLinks?.thumbnail?.replace("http:", "https:"))
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = book.volumeInfo.title,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
 
-            BookInfo(
-                book = book,
+            // Book Info
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.3f)
-                    .padding(8.dp)
-            )
+                    .weight(infoWeight)
+                    .padding(contentPadding.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Title
+                Text(
+                    text = book.volumeInfo.title ?: "Unknown Title",
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = titleMaxLines,
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = MaterialTheme.typography.titleSmall.lineHeight,
+                    modifier = Modifier.weight(1f, fill = false)
+                )
+
+                // Authors
+                book.volumeInfo.authors?.let { authors ->
+                    Text(
+                        text = authors.joinToString(", "),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = authorsMaxLines,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+            }
         }
     }
-}
-
-@Composable
-private fun BookImage(
-    book: BookVolume,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier.padding(2.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(book.volumeInfo.imageLinks?.thumbnail?.replace("http:", "https:"))
-                .crossfade(true)
-                .build(),
-            contentDescription = book.volumeInfo.title,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
-@Composable
-private fun BookInfo(
-    book: BookVolume,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        BookTitle(
-            title = book.volumeInfo.title ?: "Unknown Title",
-            modifier = Modifier.weight(1f, fill = false)
-        )
-
-        book.volumeInfo.authors?.let { authors ->
-            BookAuthors(
-                authors = authors,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun BookTitle(
-    title: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleSmall,
-        maxLines = 3,
-        overflow = TextOverflow.Ellipsis,
-        lineHeight = MaterialTheme.typography.titleSmall.lineHeight,
-        modifier = modifier
-    )
-}
-
-@Composable
-private fun BookAuthors(
-    authors: List<String>,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = authors.joinToString(", "),
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-        modifier = modifier
-    )
 }

@@ -1,4 +1,5 @@
 package com.example.bookshelf.ui.screens.shared
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,36 +17,42 @@ import androidx.compose.ui.unit.dp
 import com.example.bookshelf.R
 
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
+fun StateScreen(
+    modifier: Modifier = Modifier,
+    showLoading: Boolean = false,
+    message: String? = null,
+    buttonText: String? = null,
+    onButtonClick: (() -> Unit)? = null
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun ErrorScreen(
-    retryAction: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = (stringResource(R.string.error_message)),
-            style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(16.dp)
-        )
-        Button(
-            onClick = retryAction,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = stringResource(R.string.retry))
+        if (showLoading) {
+            CircularProgressIndicator()
+        } else {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                message?.let { msg ->
+                    Text(
+                        text = msg,
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+                
+                if (buttonText != null && onButtonClick != null) {
+                    Button(
+                        onClick = onButtonClick,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(text = buttonText)
+                    }
+                }
+            }
         }
     }
 }
