@@ -42,4 +42,4 @@ Both apps follow modern Android development practices:
 - **UI:** Jetpack Compose with Material Design 3
 - **Networking:** Retrofit with Kotlin Serialization
 - **Image Loading:** Coil
-- **Dependency Injection:** Manual DI with
+- **Dependency Injection:** Manual DI with containers
