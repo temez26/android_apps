@@ -6,6 +6,8 @@ A collection of Android applications built with Kotlin and Jetpack Compose for l
 
 ### 📚 Bookshelf
 
+![Bookshelf Screenshot](books.jpg)
+
 A book discovery app that displays books from the Google Books API in a grid layout with images, titles, and authors.
 
 **Features:**
@@ -18,6 +20,8 @@ A book discovery app that displays books from the Google Books API in a grid lay
 **Tech Stack:** Kotlin, Jetpack Compose, Retrofit, Coil, Material3
 
 ### 🐸 Amphibians
+
+![Amphibians Screenshot](amphibians.jpg)
 
 An educational app showcasing various amphibian species with detailed information and images.
 
@@ -38,4 +42,4 @@ Both apps follow modern Android development practices:
 - **UI:** Jetpack Compose with Material Design 3
 - **Networking:** Retrofit with Kotlin Serialization
 - **Image Loading:** Coil
-- **Dependency Injection:** Manual DI with containers
+- **Dependency Injection:** Manual DI with
