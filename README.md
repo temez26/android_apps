@@ -6,7 +6,7 @@ A collection of Android applications built with Kotlin and Jetpack Compose for l
 
 ### 📚 Bookshelf
 
-<img src="books.jpg" alt="Bookshelf Screenshot" width="300"/>
+<img src="./images/books.jpg" alt="Bookshelf Screenshot" width="300"/>
 
 A book discovery app that displays books from the Google Books API in a grid layout with images, titles, and authors.
 
@@ -21,7 +21,7 @@ A book discovery app that displays books from the Google Books API in a grid lay
 
 ### 🐸 Amphibians
 
-<img src="amphibians.jpg" alt="Amphibians Screenshot" width="300"/>
+<img src="./images/amphibians.jpg" alt="Amphibians Screenshot" width="300"/>
 
 An educational app showcasing various amphibian species with detailed information and images.
 
