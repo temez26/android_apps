@@ -8,11 +8,11 @@ A collection of Android applications built with Kotlin and Jetpack Compose for l
 
 <img src="./images/books.jpg" alt="Bookshelf Screenshot" width="300"/>
 
-A book discovery app that displays books from the Google Books API in a grid layout with images, titles, and authors.
+A book discovery app that fetches books from the Google Books API and displays them in a grid layout with images, titles, and authors.
 
 **Features:**
 
-- Browse books with search functionality
+- Fetch books from Google Books API
 - Grid layout with book covers
 - Material Design 3 UI
 - Error handling and loading states
@@ -23,11 +23,11 @@ A book discovery app that displays books from the Google Books API in a grid lay
 
 <img src="./images/amphibians.jpg" alt="Amphibians Screenshot" width="300"/>
 
-An educational app showcasing various amphibian species with detailed information and images.
+An educational app showcasing various amphibian species with detailed information and images, fetched from an API.
 
 **Features:**
 
-- List of amphibian species with photos
+- Fetch list of amphibian species from API
 - Detailed descriptions and classifications
 - Responsive card-based layout
 - Smooth scrolling experience
